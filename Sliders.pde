@@ -12,6 +12,10 @@ class Slider {
     rect(xPos, yPos, 10,5);
   }
   
+  int getY() {
+    return this.yPos;
+  }
+  
   void move(int y){
     if (y >= 20 && y <= 115) {
       this.yPos=y;
