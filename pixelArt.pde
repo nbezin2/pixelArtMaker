@@ -39,8 +39,8 @@ void draw() {
   if (grid == 1) {
     drawGrid();
   }
-  UIButtons();
   art1.displayArt();
+  UIButtons();
 }
 
 void UIButtons() {
@@ -115,14 +115,6 @@ void UIButtons() {
     text("Are you sure you want to clear this current",(width/2)-160,(height/2)-50);
     text("frame of art?",(width/2)-50,(height/2)-35);
   }
-  
-  
-}
-
-void clearArt() {
-  //Make a way to determine which art frame you are currently trying to delete.
-  mode = 2;
-  //art1.clearArt();
 }
 
 void mousePressed() {
@@ -302,10 +294,9 @@ void mousePressed() {
       else {
         grid = 0;
       }
-      
     }
     else if (mouseX > 200 && mouseX < 300) {
-      clearArt();
+      mode = 2;
     }
     else if (mouseX > 300 && mouseX < 400) {
       if (mode==0) {
@@ -369,7 +360,6 @@ void mouseDragged() {
       }
       else if (mode == 1) {
         art1.removeSPix(xPos, yPos);
-       
       }
     }
   }
