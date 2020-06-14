@@ -11,6 +11,13 @@ class Art {
     return this.artWork;
   }
   
+  void copyPix(Art copyP, int i, int j) {
+    artWork[i][j] = null;
+    if (copyP.getArtW()[i][j] != null) {
+      this.artWork[i][j] = new Pix((i+10)*10,(j+5)*10,copyP.getArtW()[i][j].getR(), copyP.getArtW()[i][j].getG(),copyP.getArtW()[i][j].getB());
+    }
+  }
+  
   int getHeight() {
     return this.artHeight;
   }
