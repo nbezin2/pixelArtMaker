@@ -1,13 +1,12 @@
 int grid, grSlider, mode, palMode, prevMode, artNum;
-String palModeText, modeText;
+String palModeText, modeText, fileName;
 boolean locked;
 ArrayList<Art> allArt;
+File artFolder;
 Art art1,copyPage;
 Color pC;
 Slider rS, gS, bS;
 Pallete pal1, pal2, pal3, pal4, pal5, pal6;
-
-
 
 void setup() {
   size(900, 600);
@@ -36,6 +35,7 @@ void setup() {
   artNum = 0;
   palModeText = "Set Pallete";
   modeText = "Draw";
+  fileName = "";
 }
 
 void draw() {
@@ -95,6 +95,12 @@ void UIButtons() {
   fill(0);
   textSize(19);
   text("Paste Art", 705, 40);
+  
+  fill(150);
+  rect(800,0,100,50);
+  fill(0);
+  textSize(19);
+  text("Save", 805, 40);
   
   //color & slider stuff
   line(25, 20, 25, 120);
@@ -170,6 +176,15 @@ void UIButtons() {
     text("frame of art?", (width/2)-50, (height/2)-35);
   }
   
+  if (mode == 4) {
+    nameArt();
+  }
+  else if (mode == 5) {
+    PImage pixelArt = get(101,51,width,height);
+    pixelArt.save(artFolder+"/"+fileName+".png");
+    fileName = "";
+    mode = prevMode;
+  }
 }
 
 void nextFrame() {
@@ -213,7 +228,7 @@ void pasteArt(Art art1,Art art2) {
     }
   }
   //Reset copyPage to Empty
-  copyPage = new Art();
+  //copyPage = new Art(); //keep the image that was copied without this line
 }
 
 void addArtFrame() {
@@ -417,6 +432,10 @@ void mousePressed() {
     else if (mouseX > 700 && mouseX < 800) {
       pasteArt(allArt.get(artNum), copyPage);
     }
+    //Saving Art
+    else if (mouseX > 800 && mouseX < 900) {
+      selectFolder("Select a folder to save art", "screenShot",artFolder);
+    }
   //Dealing with pop up windows when Clearing/Deleting Art Frames
   } else {
     //Clearing Current Art
@@ -434,6 +453,14 @@ void mousePressed() {
         deleteArtFrame();
         mode = prevMode;
       } else if (mouseX >= (width/2)+50 && mouseX <= (width/2)+150 && mouseY >= (height/2)+25 && mouseY <= (height/2)+75) {
+        mode = prevMode;
+      }
+    }
+    else if (mode == 4) {
+      if (mouseX >= (width/2)-150 && mouseX <= (width/2)-50 && mouseY >= (height/2)+25 && mouseY <= (height/2)+75) {
+        mode = 5;
+      } else if (mouseX >= (width/2)+50 && mouseX <= (width/2)+150 && mouseY >= (height/2)+25 && mouseY <= (height/2)+75) {
+        fileName = "";
         mode = prevMode;
       }
     }
@@ -483,6 +510,20 @@ void mouseDragged() {
 void mouseReleased() {
   locked = false;
   grSlider = 0;
+}
+
+void keyPressed() {
+  if (mode == 4) {
+    if (keyCode == BACKSPACE) {
+      if (fileName.length() > 0) {
+        fileName = fileName.substring(0,fileName.length()-1);
+      }
+    }
+    else if (keyCode != SHIFT) {
+      char letter = key;
+      fileName+=letter;
+    }
+  }
 }
 
 void drawGrid() {
